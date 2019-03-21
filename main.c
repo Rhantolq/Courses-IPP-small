@@ -16,6 +16,7 @@ int main(void) {
     }
 
     if (emptyVector(&vector) == ALLOCATION_FAILURE) {
+        freeTrie(trie_holder.trie);
         return TASK_EXITCODE;
     }
 
