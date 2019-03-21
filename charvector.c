@@ -5,6 +5,7 @@
 #include "charvector.h"
 #include <stdlib.h>
 
+// Pushes {new_elem} to the end of vector {v}
 int vectorPush(CharVector* v, char new_elem) {
     if (v->tab == NULL)
         return ALLOCATION_FAILURE;
@@ -26,11 +27,13 @@ int vectorPush(CharVector* v, char new_elem) {
     return ALLOCATION_SUCCESS;
 }
 
+// Frees up memory allocated in place of {v}
 void freeVector(CharVector *v) {
     free(v->tab);
     v->tab = NULL;
 }
 
+// Creates empty character vector in pointer {v}
 int emptyVector(CharVector* v) {
     {
         v->current_size = 0;

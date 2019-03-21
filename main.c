@@ -12,19 +12,17 @@ int main(void) {
 
     trie_holder = newTrie();
     if (trie_holder.return_code == ALLOCATION_FAILURE) {
-        printf("NOPE1!");
         return TASK_EXITCODE;
     }
 
     if (emptyVector(&vector) == ALLOCATION_FAILURE) {
-        printf("NOPE2!");
         return TASK_EXITCODE;
     }
 
     do {
         read_code = readLine(&vector);
+
         if (read_code == ALLOCATION_FAILURE) {
-            printf("NOPE3!");
             freeTrie(trie_holder.trie);
             freeVector(&vector);
             return TASK_EXITCODE;
@@ -39,9 +37,7 @@ int main(void) {
         }
     } while (read_code == 0);
 
-    //printf("no more reading!");
     freeVector(&vector);
     freeTrie(trie_holder.trie);
-    //printf("Happy end!");
     return 0;
 }

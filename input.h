@@ -7,14 +7,10 @@
 
 #include "charvector.h"
 
-
-/**
- * returns -1 if malloc fails
- * returns 1 if reaches end of file
- * returns 0 otherwise
- * @param vector
- * @return error_code
- */
+// Reads from standard input
+// returns FILE_ENDED when it meats end of input
+// returns ALLOCATION_FAILURE if memory allocation fails in {vector}
+// returns ALLOCATION_SUCCESS otherwise.
 int readLine(CharVector* vector);
 
 #endif //MALE_INPUT_H

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "find_and_union.h"
 
+// creates new trie
 TrieHolder newTrie(void) {
     TrieHolder ret;
     ret.trie = malloc(sizeof(struct TrieTree));
@@ -27,6 +28,7 @@ TrieHolder newTrie(void) {
     return ret;
 }
 
+// returns true if subtree specified by {edge} exists
 int edgeExists(Trie trie, int edge) {
     if (trie != NULL)
         return (trie->sub_trees[edge] != NULL);
@@ -34,6 +36,8 @@ int edgeExists(Trie trie, int edge) {
         return false;
 }
 
+// goes down the trie through {edge}
+// if subtree didn't exist previously it creates it
 TrieHolder goDown(Trie trie, int edge) {
     TrieHolder ret;
     if (edgeExists(trie, edge)) {
@@ -50,6 +54,7 @@ TrieHolder goDown(Trie trie, int edge) {
     }
 }
 
+// Frees the memory allocated by trie
 void freeTrie(Trie trie) {
     if (trie != NULL) {
         for (int i = 0; i < HISTORY_NUMBERS; i++) {

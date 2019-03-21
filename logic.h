@@ -9,10 +9,6 @@
 #include "trie.h"
 #include "charvector.h"
 
-
-
-int commandLineCheck(const char* vector, int start, const char* command);
-
 int parseInput(CharVector vector, TrieHolder trie_holder);
 
 #endif //MALE_LOGIC_H
