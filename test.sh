@@ -22,3 +22,4 @@ do
   fi
   echo "Valgrind ended with exitcode $?."
 done
+
