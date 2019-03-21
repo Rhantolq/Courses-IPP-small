@@ -68,12 +68,26 @@ void unify(Representative rep1, Representative rep2) {
     if (rep1->number_of_predecessors < rep2->number_of_predecessors) {
         rep1->rep = rep2;
         rep2->number_of_predecessors += rep1->number_of_predecessors + 1;
-        rep2->val = (rep2->val / 2) + (rep1->val / 2);
+
+        uint64_t new_val = 0;
+        if (rep2->val % 2 == 1 && rep1->val %2 == 1)
+            new_val = 1;
+        if (rep1->val == 0 || rep2->val == 0)
+            rep2->val = ((rep1->val > rep2->val) ? rep1->val : rep2->val);
+        else
+            rep2->val = new_val + (rep2->val / 2) + (rep1->val / 2);
     }
     else {
         rep2->rep = rep1;
         rep1->number_of_predecessors += rep2->number_of_predecessors + 1;
-        rep1->val = (rep2->val / 2) + (rep1->val / 2);
+
+        uint64_t new_val = 0;
+        if (rep2->val % 2 == 1 && rep1->val %2 == 1)
+            new_val = 1;
+        if (rep1->val == 0 || rep2->val == 0)
+            rep1->val = ((rep1->val > rep2->val) ? rep1->val : rep2->val);
+        else
+            rep1->val = new_val + (rep2->val / 2) + (rep1->val / 2);
     }
 }
 
