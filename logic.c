@@ -39,18 +39,23 @@ int commandLineCheck(const char* vector, int start, const char* command) {
     return true;
 }
 
-static inline int validHistoryNumber(char number) {
-    return (number >= '0' && number <= '0' + HISTORY_NUMBERS);
+static inline int validHistoryNumber(const char number) {
+    return (number >= '0' && number < '0' + HISTORY_NUMBERS);
+}
+
+static inline int validHistoryString(const char *history, const char end_symbol) {
+    if (!validHistoryNumber(history[0]))
+        return false;
+    for (int i = 0; history[i] != end_symbol; i++) {
+        if (!validHistoryNumber(history[i]))
+            return false;
+    }
+    return true;
 }
 
 int declareHistory(const char* history, TrieHolder trie_holder) {
-    if (!validHistoryNumber[0])
+    if (!validHistoryString(history, '\n'))
         return INPUT_ERROR;
-    for (int i = 1; history[i] != '\n'; i++) {
-        if (!validHistoryNumber(history[i]) {
-            return INPUT_ERROR;
-        }
-    }
     for (int i = 0; history[i] != '\n'; i++) {
         trie_holder = goDown(trie_holder.trie, history[i] - '0');
         if (trie_holder.return_code == ALLOCATION_FAILURE) {
@@ -61,12 +66,9 @@ int declareHistory(const char* history, TrieHolder trie_holder) {
 }
 
 int removeHistory(const char* history, TrieHolder trie_holder) {
-    if (!validHistoryNumber[0])
+    if (!validHistoryString(history, '\n'))
         return INPUT_ERROR;
     for (int i = 0; history[i] != '\n'; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            return INPUT_ERROR;
-        }
         if (edgeExists(trie_holder.trie, history[i] - '0')) {
             if (history[i + 1] == '\n') {
                 TrieHolder temp_holder = goDown(trie_holder.trie, history[i] - '0');
@@ -86,12 +88,9 @@ int removeHistory(const char* history, TrieHolder trie_holder) {
 }
 
 int validHistory(const char* history, TrieHolder trie_holder) {
-    if (!validHistoryNumber[0])
+    if (!validHistoryString(history, '\n'))
         return INPUT_ERROR;
     for (int i = 0; history[i] != '\n'; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            return INPUT_ERROR;
-        }
         if (edgeExists(trie_holder.trie, history[i] - '0')) {
             trie_holder = goDown(trie_holder.trie, history[i] - '0');
         }
@@ -106,13 +105,10 @@ int validHistory(const char* history, TrieHolder trie_holder) {
 }
 
 int energy(char* history, TrieHolder trie_holder) {
-    if (!validHistoryNumber[0])
+    if (!validHistoryString(history, '\n') && !validHistoryString(history, ' '))
         return INPUT_ERROR;
     int i = 0;
     for (i = 0; history[i] != ' ' && history[i] != '\n'; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            return INPUT_ERROR;
-        }
         if (edgeExists(trie_holder.trie, history[i] - '0')) {
             trie_holder = goDown(trie_holder.trie, history[i] - '0');
         }
@@ -134,6 +130,7 @@ int energy(char* history, TrieHolder trie_holder) {
         printf("OK\n");
         return COMMAND_SUCCESS;
     }
+
     else if (history[i] == '\n') {
         Representative representative = find(trie_holder.trie->rep, FIRST_IN_FIND_FLAG);
         if (representative->val == 0) {
@@ -147,16 +144,14 @@ int energy(char* history, TrieHolder trie_holder) {
 }
 
 int equal(const char* history, TrieHolder trie_holder) {
-    if (!validHistoryNumber[0])
+    if (!validHistoryString(history, ' '))
         return INPUT_ERROR;
+
     int i = 0;
     TrieHolder trie_holder2 = trie_holder;
     Representative rep1, rep2;
 
     for (i = 0; history[i] != ' '; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            return INPUT_ERROR;
-        }
         if (edgeExists(trie_holder.trie, history[i] - '0')) {
             trie_holder = goDown(trie_holder.trie, history[i] - '0');
         }
@@ -168,12 +163,9 @@ int equal(const char* history, TrieHolder trie_holder) {
             return UNPLANNED_EXIT;
         }
     }
-    if (!validHistoryNumber[i + 1])
+    if (!validHistoryString(history + i + 1, '\n'))
         return INPUT_ERROR;
     for (i = i + 1; history[i] != '\n'; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            return INPUT_ERROR;
-        }
         if (edgeExists(trie_holder2.trie, history[i] - '0')) {
             trie_holder2 = goDown(trie_holder2.trie, history[i] - '0');
         }
