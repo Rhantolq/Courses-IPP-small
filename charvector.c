@@ -29,7 +29,8 @@ int vectorPush(CharVector* v, char new_elem) {
 
 // Frees up memory allocated in place of {v}
 void freeVector(CharVector *v) {
-    free(v->tab);
+    if (v->tab != NULL)
+        free(v->tab);
     v->tab = NULL;
 }
 

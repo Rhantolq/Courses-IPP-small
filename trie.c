@@ -18,6 +18,7 @@ TrieHolder newTrie(void) {
     ret.trie->rep = new_rep.representative;
     if (new_rep.return_code == ALLOCATION_FAILURE) {
         free(ret.trie);
+        ret.trie = NULL;
         ret.return_code = ALLOCATION_FAILURE;
         return ret;
     }

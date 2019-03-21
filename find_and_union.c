@@ -25,6 +25,7 @@ UnionHolder newRepresentative(uint64_t value) {
 // frees up space allocated by {representative}
 void freeRepresentative(Representative representative) {
     free(representative);
+    representative = NULL;
 }
 
 // returns the representative if a given union
