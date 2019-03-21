@@ -39,26 +39,30 @@ int commandLineCheck(const char* vector, int start, const char* command) {
     return true;
 }
 
-TrieHolder declareHistory(const char* history, TrieHolder trie_holder) {
-    TrieHolder ret;
-    ret.trie = trie_holder.trie;
-    ret.return_code = COMMAND_SUCCESS;
+static inline int validHistoryNumber(char number) {
+    return (number >= '0' && number <= '0' + HISTORY_NUMBERS);
+}
 
-    for (int i = 0; history[i] != '\n'; i++) {
-        if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
-            ret.return_code = INPUT_ERROR;
-            return ret;
-        }
-        trie_holder = goDown(trie_holder.trie, history[i] - '0');
-        if (trie_holder.return_code == ALLOCATION_FAILURE) {
-            ret.return_code = ALLOCATION_FAILURE;
-            return ret;
+int declareHistory(const char* history, TrieHolder trie_holder) {
+    if (!validHistoryNumber[0])
+        return INPUT_ERROR;
+    for (int i = 1; history[i] != '\n'; i++) {
+        if (!validHistoryNumber(history[i]) {
+            return INPUT_ERROR;
         }
     }
-    return ret;
+    for (int i = 0; history[i] != '\n'; i++) {
+        trie_holder = goDown(trie_holder.trie, history[i] - '0');
+        if (trie_holder.return_code == ALLOCATION_FAILURE) {
+            return ALLOCATION_FAILURE;
+        }
+    }
+    return COMMAND_SUCCESS;
 }
 
 int removeHistory(const char* history, TrieHolder trie_holder) {
+    if (!validHistoryNumber[0])
+        return INPUT_ERROR;
     for (int i = 0; history[i] != '\n'; i++) {
         if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
             return INPUT_ERROR;
@@ -82,6 +86,8 @@ int removeHistory(const char* history, TrieHolder trie_holder) {
 }
 
 int validHistory(const char* history, TrieHolder trie_holder) {
+    if (!validHistoryNumber[0])
+        return INPUT_ERROR;
     for (int i = 0; history[i] != '\n'; i++) {
         if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
             return INPUT_ERROR;
@@ -100,6 +106,8 @@ int validHistory(const char* history, TrieHolder trie_holder) {
 }
 
 int energy(char* history, TrieHolder trie_holder) {
+    if (!validHistoryNumber[0])
+        return INPUT_ERROR;
     int i = 0;
     for (i = 0; history[i] != ' ' && history[i] != '\n'; i++) {
         if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
@@ -139,6 +147,8 @@ int energy(char* history, TrieHolder trie_holder) {
 }
 
 int equal(const char* history, TrieHolder trie_holder) {
+    if (!validHistoryNumber[0])
+        return INPUT_ERROR;
     int i = 0;
     TrieHolder trie_holder2 = trie_holder;
     Representative rep1, rep2;
@@ -158,6 +168,8 @@ int equal(const char* history, TrieHolder trie_holder) {
             return UNPLANNED_EXIT;
         }
     }
+    if (!validHistoryNumber[i + 1])
+        return INPUT_ERROR;
     for (i = i + 1; history[i] != '\n'; i++) {
         if (history[i] < '0' || history[i] >= '0' + HISTORY_NUMBERS) {
             return INPUT_ERROR;
@@ -181,6 +193,8 @@ int equal(const char* history, TrieHolder trie_holder) {
         unify(rep1, rep2);
         return COMMAND_SUCCESS;
     }
+    if (rep1 == rep2)
+        return COMMAND_SUCCESS;
     //else
     return INPUT_ERROR;
 }
@@ -190,16 +204,16 @@ int parseInput(CharVector vector, TrieHolder trie_holder) {
 
     if (commandLineCheck(vector.tab, 0, "DECLARE ")) {
         char* history = vector.tab + strlen("DECLARE ");
-        trie_holder = declareHistory(history, trie_holder);
-        if (trie_holder.return_code == COMMAND_SUCCESS) {
+        int worked = declareHistory(history, trie_holder);
+        if (worked == COMMAND_SUCCESS) {
             printf("OK\n");
             return COMMAND_SUCCESS;
         }
-        else if (trie_holder.return_code == ALLOCATION_FAILURE) {
+        else if (worked == ALLOCATION_FAILURE) {
             printf("NOPE4!");
             return TASK_EXITCODE;
         }
-        else if (trie_holder.return_code == INPUT_ERROR) {
+        else if (worked == INPUT_ERROR) {
             fprintf(stderr, "ERROR\n");
             return COMMAND_SUCCESS;
         }

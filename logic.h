@@ -10,13 +10,6 @@
 #include "charvector.h"
 
 
-TrieHolder declareHistory(const char* history, TrieHolder trie_holder);
-
-int removeHistory(const char* history, TrieHolder trie_holder);
-
-int validHistory(const char* history, TrieHolder trie_holder);
-
-int energy(char* history, TrieHolder trie_holder);
 
 int commandLineCheck(const char* vector, int start, const char* command);
 
