@@ -16,12 +16,12 @@ struct CharacterVector {
 };
 
 //adds new_elem on the end of the vector
-int vectorPush(CharVector* vector, char new_elem);
+int vectorPush(CharVector *vector, char new_elem);
 
 //frees up space reserved by vector.tab
 void freeVector(CharVector *vector);
 
 //empty vector constructor
-int emptyVector(CharVector* v);
+int emptyVector(CharVector *v);
 
 #endif //MALE_CHARVECTOR_H

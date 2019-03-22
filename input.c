@@ -10,7 +10,7 @@
 // returns FILE_ENDED when it meats end of input
 // returns ALLOCATION_FAILURE if memory allocation fails in {vector}
 // returns ALLOCATION_SUCCESS otherwise.
-int readLine(CharVector* vector) {
+int readLine(CharVector *vector) {
     int i_char;
 
     //making sure we don't leak memory

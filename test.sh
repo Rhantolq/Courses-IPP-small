@@ -22,4 +22,8 @@ do
   fi
   echo "Valgrind ended with exitcode $?."
 done
+rm temp.out
+rm temp.err
+rm vgtemp.out
+rm vgtemp.err
 
